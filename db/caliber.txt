@@ -1,0 +1,12 @@
+caliber_id 	caliber_name 		price
+1 		5.56×45 NATO 		4.5
+2 		7.62×51 NATO 		8
+3 		7.62×39 		3
+4 		7.62×54R 		7
+5 		5.7×28mm FN 		5
+6 		4.6×30 HK 		5.5
+7 		9×19 Parabellum 	2.5
+8 		9×18 Makarov 		2
+9 		.30-06 Springfield 	10
+10 		.45 ACP 		3.5
+11 		8mm Mauser 		10

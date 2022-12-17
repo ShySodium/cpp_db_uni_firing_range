@@ -1,0 +1,10 @@
+manufacturer_id manufacturer_name
+1 		Springfield Armory
+2 		Heckler & Koch
+3 		Kalashnikov Concern
+4 		Daniel Defense
+5 		FN Herstal
+6 		Imperial Tula Arms Plant
+7 		Mauser
+8 		SIG Sauer
+9 		GLOCK
