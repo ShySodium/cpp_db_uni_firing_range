@@ -2,7 +2,7 @@
 #include "./sub/functions.h"
 #include "./sub/class.h"
 #include "./sub/db_load.h"
-#include "./sub/db_querry.h"
+#include "./sub/db_query.h"
 
 
 #ifndef iostream
