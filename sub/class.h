@@ -118,11 +118,11 @@ class Gun {
 
 		void print_header()
 		{
-			cout<< "id\tname\t\t\t\tcaliber_id\tmanufacturer_id";
+			cout<< "id\tname\t\t\tcaliber_id\tmanufacturer_id";
 		}
 		void print_class()
 		{
-			cout<< id << "\t" << name << "\t\t" << caliber_id << "\t\t" << manufacturer_id;
+			cout<< id << "\t" << name << "\t" << caliber_id << "\t\t" << manufacturer_id;
 		}
 };
 
