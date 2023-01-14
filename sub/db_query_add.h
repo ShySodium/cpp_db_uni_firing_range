@@ -17,6 +17,7 @@
 #include "class.h"
 #include "functions.h"
 
+
 using namespace std;
 
 void add_record_caliber(int id, string name, float price, vector<Caliber> &caliber)
