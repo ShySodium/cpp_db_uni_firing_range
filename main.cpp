@@ -6,6 +6,7 @@
 #include "./sub/db_query_add.h"
 #include "./sub/db_query_delete.h"
 #include "./sub/db_query_modify.h"
+#include "./sub/db_query_backup.h"
 
 #ifndef iostream
 #include <iostream>
@@ -34,8 +35,9 @@ bool interface(vector<Caliber> &caliber, vector<Client> &client, vector<Gun> &gu
     cout<< "3. Delete record" << endl; // done
     cout<< "4. Modify record" << endl; // done
     cout<< "5. Misc queries" << endl;
-    cout<< "6. Credits" << endl;
-    cout<< "7. Exit" << endl; // done
+    cout<< "6. Backup" << endl; // done
+    cout<< "7. Credits" << endl; // done
+    cout<< "8. Exit" << endl; // done
     cout<< "Select: "; cin>> choice;
     cout<< endl << "+-------------------------+" << endl << endl;
 
@@ -2043,15 +2045,378 @@ bool interface(vector<Caliber> &caliber, vector<Client> &client, vector<Gun> &gu
 
         case 5: // misc queries
         {
+            int choice;
+            cout<< "Misc. queries" << endl;
+            cout<< "1. Add shots to visit" << endl; // done
+            cout<< "2. Go back" << endl; // done
+            cout<< "Select: "; cin>> choice;
 
+            switch(choice)
+            {
+                case 1: // add shots to visit
+                {
+                    int choice, target_id = 0;
+                    cout<< "Add shots to Visit according to: " << endl;
+                    cout<< "1. Manual id input" << endl; //done
+                    cout<< "2. List" << endl; // done
+                    cout<< "3. Go back" << endl; // done
+                    cout<< "Select: "; cin>> choice;
+                    cout<< endl << "+-------------------------+" << endl << endl;
+
+                    switch(choice)
+                    {
+                        case 1: // add shots visit manual id
+                        {
+                            cout<< "Id to modify (0 to exit): "; cin>> target_id;
+                            if (target_id == 0) return true;
+                        } break;
+
+                        case 2: // add shots visit list
+                        {
+                            print_joined_tables_visit(caliber, client, gun, manufacturer, visit);
+                            cout<< "Select (0 to exit): "; cin>> target_id;
+                            if (target_id == 0) return true;
+                        } break;
+
+                        case 3: // add shots visit go back
+                        {
+                            cout<< "Returning...";
+                            return true;
+                        } break;
+
+                        default:
+                        {
+                            cout<< "Unknown value!";
+                            return true;
+                        } break;
+                    }
+
+                    int added_shots = -1;
+                    while(added_shots < 0)
+                    {   
+                        cout<< "Added shots can't be negative" << endl;
+                        cout<< "Added shots (-1 to exit): "; cin>> added_shots;
+                        if (added_shots == -1) return true;
+                    }
+                    cout<< endl;
+
+                    float accuracy = -1;
+                    while((accuracy < 0 || accuracy > 1))
+                    {
+                        cout<< "Accuracy must be between 0 and 1 (i.e. 0.5 for 50%)" << endl;
+                        cout<< "Precision of 2 symbols after period" << endl;
+                        cout<< "Accuracy (-1 to exit): "; cin>> accuracy;
+                        if (accuracy == -1) return true;
+                        string accuracy_str = to_string(accuracy);
+                        accuracy_str = accuracy_str.substr(0, 4);
+                        if (accuracy_str.length() > 4) accuracy = -1; // to enforce precision limit
+                    }
+
+                    float num = added_shots + accuracy;
+                    
+                    fstream file;
+			        string path = "./db/visit.txt";
+			        file.open(path.c_str(), ios::out);
+                    for (int i=0; i<visit.size(); i++)
+                    {
+                        if (visit[i].id == target_id)
+                        {
+                            visit[i]+num;
+                        }
+                        file<< "\n" << visit[i].id << "\t" << visit[i].client_id << "\t" << visit[i].gun_id << "\t" << visit[i].amount_shot << "\t" << visit[i].accuracy << "\t" << visit[i].date << "\t" << visit[i].time;
+                    }
+                } break;
+
+                case 2: // misc queries go back
+                {
+                    cout<< "Returning...";
+                    return true;
+                } break;
+
+                default:
+                {
+                    cout<< "Unknown value!";
+                    return true;
+                } break;
+            }
         } break;
 
-        case 6: // credits
+        case 6: // backup
         {
+            int choice;
+            cout<< "Backup options" << endl;
+            cout<< "1. Restore backup" << endl;
+            cout<< "2. Create backup" << endl; // done
+            cout<< "3. Go back" << endl; // done
+            cout<< "Select: "; cin>> choice;
+            cout<< endl << "+-------------------------+" << endl << endl;
 
+            switch(choice)
+            {
+                case 1: // restore backup
+                {
+                    int choice;
+                    cout<< "Restore backup from:" << endl;
+                    cout<< "1. Original backup" << endl;
+                    cout<< "2. User created backup" << endl;
+                    cout<< "3. Go back" << endl;
+                    cout<< "Select: "; cin>> choice;
+
+                    switch(choice)
+                    {
+                        case 1: // restore backup original
+                        {
+                            int choice;
+                            cout<< "Select table to restore from original backup" << endl;
+                            cout<< "1. All" << endl; // done
+                            cout<< "2. Caliber" << endl; // done
+                            cout<< "3. Client" << endl; // done
+                            cout<< "4. Gun" << endl; // done
+                            cout<< "5. Manufacturer" << endl; // done
+                            cout<< "6. Visit" << endl; // done
+                            cout<< "7. Go back" << endl; // done
+                            cout<< "Select: "; cin>> choice;
+                            cout<< endl << "+-------------------------+" << endl << endl;
+
+                            switch(choice)
+                            {
+                                case 1: // restore backup all
+                                {
+                                    backup_restore_caliber(caliber, "original");
+                                    cout<< endl;
+                                    backup_restore_client(client, "original");
+                                    cout<< endl;
+                                    backup_restore_gun(gun, "original");
+                                    cout<< endl;
+                                    backup_restore_manufacturer(manufacturer, "original");
+                                    cout<< endl;
+                                    backup_restore_visit(visit, "original");
+                                    cout<< endl;
+                                } break;
+
+                                case 2: // restore backup caliber
+                                {
+                                    backup_restore_caliber(caliber, "original");
+                                    cout<< endl;
+                                } break;
+
+                                case 3: // restore backup client
+                                {
+                                    backup_restore_client(client, "original");
+                                    cout<< endl;
+                                } break;
+
+                                case 4: // restore backup gun
+                                {
+                                    backup_restore_gun(gun, "original");
+                                    cout<< endl;
+                                } break;
+
+                                case 5: // restore backup manufacturer
+                                {
+                                    backup_restore_manufacturer(manufacturer, "original");
+                                    cout<< endl;
+                                } break;
+
+                                case 6: // restore buckup visit
+                                {
+                                    backup_restore_visit(visit, "original");
+                                    cout<< endl;
+                                } break;
+
+                                case 7: // restore backup go back
+                                {
+                                    cout<< "Returning...";
+                                    return true;
+                                } break;
+
+                                default:
+                                {
+                                    cout<< "Unknown value!";
+                                    return true;
+                                } break;
+                            }
+                        } break;
+
+                        case 2: // restore backup user
+                        {
+                            int choice;
+                            cout<< "Select table to restore from user backup" << endl;
+                            cout<< "1. All" << endl; // done
+                            cout<< "2. Caliber" << endl; // done
+                            cout<< "3. Client" << endl; // done
+                            cout<< "4. Gun" << endl; // done
+                            cout<< "5. Manufacturer" << endl; // done
+                            cout<< "6. Visit" << endl; // done
+                            cout<< "7. Go back" << endl; // done
+                            cout<< "Select: "; cin>> choice;
+                            cout<< endl << "+-------------------------+" << endl << endl;
+
+                            switch(choice)
+                            {
+                                case 1: // restore backup all
+                                {
+                                    backup_restore_caliber(caliber, "user");
+                                    cout<< endl;
+                                    backup_restore_client(client, "user");
+                                    cout<< endl;
+                                    backup_restore_gun(gun, "user");
+                                    cout<< endl;
+                                    backup_restore_manufacturer(manufacturer, "user");
+                                    cout<< endl;
+                                    backup_restore_visit(visit, "user");
+                                    cout<< endl;
+                                } break;
+
+                                case 2: // restore backup caliber
+                                {
+                                    backup_restore_caliber(caliber, "user");
+                                    cout<< endl;
+                                } break;
+
+                                case 3: // restore backup client
+                                {
+                                    backup_restore_client(client, "user");
+                                    cout<< endl;
+                                } break;
+
+                                case 4: // restore backup gun
+                                {
+                                    backup_restore_gun(gun, "user");
+                                    cout<< endl;
+                                } break;
+
+                                case 5: // restore backup manufacturer
+                                {
+                                    backup_restore_manufacturer(manufacturer, "user");
+                                    cout<< endl;
+                                } break;
+
+                                case 6: // restore buckup visit
+                                {
+                                    backup_restore_visit(visit, "user");
+                                    cout<< endl;
+                                } break;
+
+                                case 7: // restore backup go back
+                                {
+                                    cout<< "Returning...";
+                                    return true;
+                                } break;
+
+                                default:
+                                {
+                                    cout<< "Unknown value!";
+                                    return true;
+                                } break;
+                            }
+                        } break;
+
+                        case 3: // restore backup go back
+                        {
+                            cout<< "Returning...";
+                            return true;
+                        } break;
+
+                        default:
+                        {
+                            cout<< "Unknown value!";
+                            return true;
+                        } break;
+                    }
+                } break;
+
+                case 2: // create backup
+                {
+                    int choice;
+                    cout<< "Select table to backup" << endl;
+                    cout<< "1. All" << endl; // done
+                    cout<< "2. Caliber" << endl; // done
+                    cout<< "3. Client" << endl; // done
+                    cout<< "4. Gun" << endl; // done
+                    cout<< "5. Manufacturer" << endl; // done
+                    cout<< "6. Visit" << endl; // done
+                    cout<< "7. Go back" << endl; // done
+                    cout<< "Select: "; cin>> choice;
+                    cout<< endl << "+-------------------------+" << endl << endl;
+
+                    switch(choice)
+                    {
+                        case 1: // create backup all
+                        {
+                            backup_create_caliber(caliber);
+                            cout<< endl;
+                            backup_create_client(client);
+                            cout<< endl;
+                            backup_create_gun(gun);
+                            cout<< endl;
+                            backup_create_manufacturer(manufacturer);
+                            cout<< endl;
+                            backup_create_visit(visit);
+                        } break;
+
+                        case 2: // create backup caliber
+                        {
+                            backup_create_caliber(caliber);
+                        } break;
+
+                        case 3: // create backup client
+                        {
+                            backup_create_client(client);
+                        } break;
+
+                        case 4: // create backup gun
+                        {
+                            backup_create_gun(gun);
+                        } break;
+
+                        case 5: // create backup manufacturer
+                        {
+                            backup_create_manufacturer(manufacturer);
+                        } break;
+
+                        case 6: // create buckup visit
+                        {
+                            backup_create_visit(visit);
+                        } break;
+
+                        case 7: // backup go back
+                        {
+                            cout<< "Returning...";
+                            return true;
+                        } break;
+
+                        default:
+                        {
+                            cout<< "Unknown value!";
+                            return true;
+                        } break;
+                    }
+                } break;
+
+                case 3: // backup go back
+                {
+                    cout<< "Returning...";
+                    return true;
+                } break;
+
+                default:
+                {
+                    cout<< "Unknown value!";
+                    return true;
+                } break;
+            }
         } break;
 
-        case 7: // interface exit
+        case 7: // credits
+        {
+            cout<< "Author: Kacper Klimkowski" << endl;
+            cout<< "Speical thanks to:" << endl;
+            cout<< "\tStack Overflow forum" << endl;
+            cout<< "\tcplusplus.com" << endl;
+        } break;
+
+        case 8: // interface exit
         {
             cout<< "Exiting...";
             return false;

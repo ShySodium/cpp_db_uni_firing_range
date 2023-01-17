@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef iostream
 #include <iostream>
 #endif
@@ -16,12 +18,8 @@
 
 #include "class.h"
 
-
 using namespace std;
 
-/*
-    //Reads the 
-*/
 void read_file_to_caliber_vec(string path, vector<Caliber> &caliber)
 {
     fstream file;

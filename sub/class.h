@@ -6,6 +6,14 @@
 #include <string>
 #endif
 
+#ifndef cmath
+#include <cmath>
+#endif
+
+#ifndef fstream
+#include <fstream>
+#endif
+
 #pragma once
 
 using namespace std;
@@ -70,7 +78,8 @@ class Client {
 		string phone_dir;
 		string phone_num;
 
-		Client(int id, string first_name, string last_name, string pesel, string phone_dir, string phone_num)
+		Client(int id, string first_name, string last_name, 
+				string pesel, string phone_dir, string phone_num)
 		{
 			this->id = id;
 			this->first_name = first_name;
@@ -94,6 +103,8 @@ class Client {
 			cout<< id << "\t" << first_name << "\t" << last_name << "\t" << pesel << "\t"
 				<< phone_dir << "\t\t" << phone_num;
 		}
+
+		
 };
 
 class Gun {
@@ -152,7 +163,14 @@ class Manufacturer {
 		}
 };
 
-class Visit {
+class Forced_class_that_only_exists_to_tick_a_checkbox {
+	public:
+		class Forced_class_that_only_exists_to_tick_a_checkbox_inner {
+			virtual void operator+(float num) = 0;
+		};
+};
+
+class Visit: public Forced_class_that_only_exists_to_tick_a_checkbox {
 	public:
 		int id;
 		int client_id;
@@ -162,7 +180,8 @@ class Visit {
 		string date;
 		string time;
 
-		Visit(int id, int client_id, int gun_id, int amount_shot, float accuracy, string date, string time)
+		Visit(int id, int client_id, int gun_id, int amount_shot, float accuracy,
+				string date, string time)
 		{
 			this->id = id;
 			this->client_id = client_id;
@@ -186,4 +205,48 @@ class Visit {
 			cout<< id << "\t" << client_id << "\t\t" << gun_id << "\t" << amount_shot << "\t\t" << accuracy << "\t\t"
 				<< date << "\t" << time;
 		}
+
+		void operator+(float num)
+		{
+			int added_shots = int(num);
+			float with_accuracy = num - added_shots;
+
+			int old_score = amount_shot * accuracy;
+			int added_score = added_shots * with_accuracy;
+			amount_shot += added_shots;
+			float acc = (old_score + added_score) / float(amount_shot);
+			accuracy = ceil(acc * 100) / 100;
+		}
 };
+
+/*
+class Ranking: public Accu {
+	public:
+		int client_id;
+		int amount_shot;
+		float accuracy;
+		string date_start;
+		string date_end;
+
+		Ranking(int client_id, int amount_shot, float accuracy, string date_start, string date_end)
+		{
+			this->client_id = client_id;
+			this->amount_shot = amount_shot;
+			this->accuracy = accuracy;
+			this->date_start = date_start;
+			this->date_end = date_end;
+		}
+
+		void operator+(float num)
+		{
+			int added_shots = int(num);
+			float with_accuracy = num - added_shots;
+
+			int old_score = amount_shot * accuracy;
+			int added_score = added_shots * with_accuracy;
+			
+			amount_shot += added_shots;
+			accuracy = (old_score + added_score) / amount_shot;
+		}
+};
+*/

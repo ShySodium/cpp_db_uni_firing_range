@@ -20,10 +20,9 @@
 
 using namespace std;
 
-void add_record_caliber(int id, string name, float price, vector<Caliber> &caliber)
+void add_record_caliber(int id, string name, float price, vector<Caliber> &caliber, string path="./db/caliber.txt")
 {
     fstream file;
-    string path = "./db/caliber.txt";
     file.open(path.c_str(), ios::app);
     file<< "\n" << id << "\t" << name << "\t" << price;
     file.close();
@@ -36,10 +35,9 @@ void add_record_caliber(int id, string name, float price, vector<Caliber> &calib
     cout<< "Record added" << endl;
 }
 
-void add_record_client(int id, string first_name, string last_name, string pesel, string phone_dir, string phone_num, vector<Client> &client)
+void add_record_client(int id, string first_name, string last_name, string pesel, string phone_dir, string phone_num, vector<Client> &client, string path="./db/client.txt")
 {
     fstream file;
-    string path = "./db/client.txt";
     file.open(path.c_str(), ios::app);
     file<< "\n" << id << "\t" << first_name << "\t" << last_name << "\t" << pesel << "\t" << phone_dir << "\t" << phone_num;
     file.close();
@@ -52,10 +50,9 @@ void add_record_client(int id, string first_name, string last_name, string pesel
     cout<< "Record added" << endl;
 }
 
-void add_record_gun(int id, string name, int caliber_id, int manufacturer_id, vector<Gun> &gun)
+void add_record_gun(int id, string name, int caliber_id, int manufacturer_id, vector<Gun> &gun, string path="./db/gun.txt")
 {
     fstream file;
-    string path = "./db/gun.txt";
     file.open(path.c_str(), ios::app);
     file<< "\n" << id << "\t" << name << "\t" << caliber_id << "\t" << manufacturer_id;
     file.close();
@@ -68,10 +65,10 @@ void add_record_gun(int id, string name, int caliber_id, int manufacturer_id, ve
     cout<< "Record added" << endl;
 }
 
-void add_record_manufacturer(int id, string name, vector<Manufacturer> &manufacturer)
+void add_record_manufacturer(int id, string name, vector<Manufacturer> &manufacturer, string path="./db/manufacturer.txt")
 {
     fstream file;
-    string path = "./db/manufacturer.txt";
+    
     file.open(path.c_str(), ios::app);
     file<< "\n" << id << "\t" << name;
     file.close();
@@ -84,10 +81,9 @@ void add_record_manufacturer(int id, string name, vector<Manufacturer> &manufact
     cout<< "Record added" << endl;
 }
 
-void add_record_visit(int id, int client_id, int gun_id, int amount_shot, float accuracy, string date, string time, vector<Visit> &visit)
+void add_record_visit(int id, int client_id, int gun_id, int amount_shot, float accuracy, string date, string time, vector<Visit> &visit, string path="./db/visit.txt")
 {
     fstream file;
-    string path = "./db/visit.txt";
     file.open(path.c_str(), ios::app);
     file<< "\n" << id << "\t" << client_id << "\t" << gun_id << "\t" << amount_shot << "\t" << accuracy << "\t" << date << "\t" << time;
     file.close();
