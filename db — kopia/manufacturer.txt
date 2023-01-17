@@ -1,9 +1,0 @@
-1	Springfield_Armory******
-2	Heckler_&_Koch**********
-3	Kalashnikov_Concern*****
-4	Daniel_Defense**********
-5	FN_Herstal**************
-6	Imperial_Tula_Arms_Plant
-7	Mauser******************
-8	SIG_Sauer***************
-9	GLOCK*******************

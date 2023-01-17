@@ -1,7 +1,0 @@
-1	Cezary****	Krawczyk**	00291571018	+48	124651423
-2	Juliusz***	Cezar*****	97082950097	+48	325641741
-3	California	Friday****	95071986791	+48	225437432
-4	Daniel****	Makowski**	56040821196	+48	357416872
-5	Florian***	Kowalski**	91050666771	+48	542136982
-6	Ludwik****	Jawrowski*	98012844794	+48	236874159
-7	Kacper****	Klimkowski	22010116894	+48	867409243
