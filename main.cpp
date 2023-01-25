@@ -26,9 +26,9 @@ bool interface(vector<Caliber> &caliber, vector<Client> &client, vector<Gun> &gu
 {
     cout<< endl;
     cout<<
-        "+-------------------------+" << endl <<
-        "| FIRING RANGE INTEREFACE |" << endl <<
-        "+-------------------------+" << endl;
+        "+------------------------+" << endl <<
+        "| FIRING RANGE INTERFACE |" << endl <<
+        "+------------------------+" << endl;
     int choice;
     cout<< "1. Read table / record" << endl; // done
     cout<< "2. Add record" << endl; // done
@@ -2048,7 +2048,8 @@ bool interface(vector<Caliber> &caliber, vector<Client> &client, vector<Gun> &gu
             int choice;
             cout<< "Misc. queries" << endl;
             cout<< "1. Add shots to visit" << endl; // done
-            cout<< "2. Go back" << endl; // done
+            cout<< "2. Poly" << endl;
+            cout<< "3. Go back" << endl; // done
             cout<< "Select: "; cin>> choice;
 
             switch(choice)
@@ -2117,6 +2118,7 @@ bool interface(vector<Caliber> &caliber, vector<Client> &client, vector<Gun> &gu
                     fstream file;
 			        string path = "./db/visit.txt";
 			        file.open(path.c_str(), ios::out);
+                    
                     for (int i=0; i<visit.size(); i++)
                     {
                         if (visit[i].id == target_id)
@@ -2127,7 +2129,83 @@ bool interface(vector<Caliber> &caliber, vector<Client> &client, vector<Gun> &gu
                     }
                 } break;
 
-                case 2: // misc queries go back
+                case 2: // polymorphisim
+                {
+                    int choice, target_id = 0;
+                    cout<< "Add shots to Visit according to (doesn't change the actual values, only serves to showcase polymorphisim): " << endl;
+                    cout<< "1. Manual id input" << endl; //done
+                    cout<< "2. List" << endl; // done
+                    cout<< "3. Go back" << endl; // done
+                    cout<< "Select: "; cin>> choice;
+                    cout<< endl << "+-------------------------+" << endl << endl;
+
+                    switch(choice)
+                    {
+                        case 1: // polymorphisim manual id
+                        {
+                            cout<< "Id to modify (0 to exit): "; cin>> target_id;
+                            if (target_id == 0) return true;
+                        } break;
+
+                        case 2: // polymorphisim list
+                        {
+                            print_joined_tables_visit(caliber, client, gun, manufacturer, visit);
+                            cout<< "Select (0 to exit): "; cin>> target_id;
+                            if (target_id == 0) return true;
+                        } break;
+
+                        case 3: // polymorphisim go back
+                        {
+                            cout<< "Returning...";
+                            return true;
+                        } break;
+
+                        default:
+                        {
+                            cout<< "Unknown value!";
+                            return true;
+                        } break;
+                    }
+
+                    int added_shots = -1;
+                    while(added_shots < 0)
+                    {   
+                        cout<< "Added shots can't be negative" << endl;
+                        cout<< "Added shots (-1 to exit): "; cin>> added_shots;
+                        if (added_shots == -1) return true;
+                    }
+                    cout<< endl;
+
+                    float accuracy = -1;
+                    while((accuracy < 0 || accuracy > 1))
+                    {
+                        cout<< "Accuracy must be between 0 and 1 (i.e. 0.5 for 50%)" << endl;
+                        cout<< "Precision of 2 symbols after period" << endl;
+                        cout<< "Accuracy (-1 to exit): "; cin>> accuracy;
+                        if (accuracy == -1) return true;
+                        string accuracy_str = to_string(accuracy);
+                        accuracy_str = accuracy_str.substr(0, 4);
+                        if (accuracy_str.length() > 4) accuracy = -1; // to enforce precision limit
+                    }
+
+                    float num = added_shots + accuracy;
+
+                    for (int i=0; i<visit.size(); i++)
+                    {
+                        if (visit[i].id == target_id)
+                        {
+                            Visit_poly visit_poly_temp(visit[i].id, visit[i].amount_shot, visit[i].accuracy);
+                            Forced_class_that_only_exists_to_tick_a_checkbox* poly = &visit_poly_temp;
+                            poly->add(num);
+
+                            poly->print_header();
+                            cout<< endl;
+                            poly->print_class();
+                        }
+                    }
+                } break;
+
+                case 3: // misc queries go back
                 {
                     cout<< "Returning...";
                     return true;
