@@ -163,14 +163,9 @@ class Manufacturer {
 		}
 };
 
-class Forced_class_that_only_exists_to_tick_a_checkbox {
-	public:
-		class Forced_class_that_only_exists_to_tick_a_checkbox_inner {
-			virtual void operator+(float num) = 0;
-		};
-};
 
-class Visit: public Forced_class_that_only_exists_to_tick_a_checkbox {
+
+class Visit{
 	public:
 		int id;
 		int client_id;
@@ -219,6 +214,60 @@ class Visit: public Forced_class_that_only_exists_to_tick_a_checkbox {
 		}
 };
 
+class Forced_class_that_only_exists_to_tick_a_checkbox {
+	public:
+		virtual void add(float num) = 0;
+		virtual void print_header() = 0;
+		virtual void print_class() = 0;
+		~Forced_class_that_only_exists_to_tick_a_checkbox()
+		{
+
+		}
+		class Forced_class_that_only_exists_to_tick_a_checkbox_inner {
+			virtual void sub(float num) = 0;
+		};
+};
+
+class Visit_poly: public Forced_class_that_only_exists_to_tick_a_checkbox{
+	public:
+		int id;
+		int amount_shot;
+		float accuracy;
+
+		Visit_poly(int id, int amount_shot, float accuracy)
+		{
+			this->id = id;
+			this->amount_shot = amount_shot;
+			this->accuracy = accuracy;
+		}
+
+		~Visit_poly()
+		{
+			
+		}
+
+		void add(float num)
+		{
+			int added_shots = int(num);
+			float with_accuracy = num - added_shots;
+
+			int old_score = amount_shot * accuracy;
+			int added_score = added_shots * with_accuracy;
+			amount_shot += added_shots;
+			float acc = (old_score + added_score) / float(amount_shot);
+			accuracy = ceil(acc * 100) / 100;
+		}
+
+		void print_header()
+		{
+			cout<< "Visit ID\tAmount shot\tAccuracy";
+		}
+
+		void print_class()
+		{
+			cout<< this->id << "\t\t" << this->amount_shot << "\t\t" << this->accuracy;
+		}
+};
 /*
 class Ranking: public Accu {
 	public:
